@@ -8,9 +8,9 @@ class Settings(BaseSettings):
     LANGSMITH_API_KEY: str
     PINECONE_API_KEY: str
     OPENAI_API_KEY: str
-    EMBEDDING_MODEL: str
-    OPENAI_MODEL: str
-    PINECONE_INDEX: str
+    EMBEDDING_MODEL: str = ""
+    OPENAI_MODEL: str = ""
+    PINECONE_INDEX: str = ""
     model_config = SettingsConfigDict(env_file=".env")
 
 settings = Settings()
