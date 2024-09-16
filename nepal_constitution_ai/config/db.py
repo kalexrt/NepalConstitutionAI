@@ -16,3 +16,6 @@ def create_db_session():
     engine = create_engine(conn)
     SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
     return SessionLocal()
+
+Base = declarative_base()
+__all__ = ['Base', 'create_db_session']
