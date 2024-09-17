@@ -1,4 +1,4 @@
-from pydantic_settings import BaseSettings
+from pydantic_settings import BaseSettings, SettingsConfigDict
 class Settings(BaseSettings):
     POSTGRES_USER: str
     POSTGRES_PASSWORD: str
@@ -11,6 +11,7 @@ class Settings(BaseSettings):
     EMBEDDING_MODEL: str = ""
     OPENAI_MODEL: str = ""
     PINECONE_INDEX: str = ""
+    FILE_PATH: str = "./data/refined_nepal_constitution_ai.pdf"
     model_config = SettingsConfigDict(env_file=".env")
 
 settings = Settings()
