@@ -11,6 +11,7 @@ class Settings(BaseSettings):
     EMBEDDING_MODEL: str = ""
     OPENAI_MODEL: str = ""
     PINECONE_INDEX: str = ""
+    FILE_PATH: str = "./data/refined_nepal_constitution_ai.pdf"
     model_config = SettingsConfigDict(env_file=".env")
 
 settings = Settings()
