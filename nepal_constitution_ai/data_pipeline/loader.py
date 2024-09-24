@@ -3,8 +3,8 @@ from loguru import logger
 from langchain_community.document_loaders import PyPDFLoader
 from nepal_constitution_ai.config.config import settings
 
-def load_pdf():
-    file_path = settings.FILE_PATH
+def load_pdf(file_path: str) -> list[dict] | None:
+    file_path = file_path
     file_extension = os.path.splitext(file_path)[1].lower()
 
     if file_extension != '.pdf':
@@ -15,10 +15,10 @@ def load_pdf():
         logger.info(f"Attempting to load PDF from {file_path}")
         loader = PyPDFLoader(
             file_path=file_path,
-            extract_images=True
+            extract_images=False
         )
         logger.info("PDF loaded successfully")
-        return loader
+        return loader.load()
 
     except FileNotFoundError as e:
         logger.error(f"File not found: {e}")
