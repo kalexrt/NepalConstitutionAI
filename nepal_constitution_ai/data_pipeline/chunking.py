@@ -212,23 +212,35 @@ def populate_chunked_data_dict(articles: list,schedules: list, doc_index: dict) 
     return chunked_data_dict_list
 
 
-def chunk_pdf_content(file_path: str) ->  list:
-    """main function to chunk the pdf content"""
+def load_and_chunk_pdf_content(file_path: str) ->  list:
+    """
+    Main function to chunk the pdf content.
+    
+    Args: 
+    file_path(str): the file path for the pdf that is to be loaded and chunked
+
+    Returns:
+    chunked_data_dict_list (dict): Dictionary containing the chunks as well as metadata
+    chunked_data (list): List containing only the chunks
+    """
 
     pdf_sections = format_pdf_section(file_path)
     logger.info("Chunking PDF content...")
+    #
     articles = chunk_content_by_section(pdf_sections["articles"])
     schedules = chunk_schedule_content(pdf_sections["schedules"])
-    article51_sub_articles = split_by_letter_marker(articles[50])
+    article51_sub_articles = split_by_letter_marker(articles[50]) #manual chunking for article 51 because it has subsections from a to m 
     articles.pop(50)
-    for i in range(len(article51_sub_articles)):
+
+    for i in range(len(article51_sub_articles)): #insert subarticles of 51 between 50 and 52
         articles.insert(i+50, article51_sub_articles[i])
 
     doc_index = parse_table_of_contents(pdf_sections["toc"], toc_articles_index)
-    chunked_data_dict_list = populate_chunked_data_dict(articles, schedules, doc_index)
 
-    chunked_data_dict_list.insert(0, {"preamble": pdf_sections["preamble"]})
+    chunked_data_dict_list = populate_chunked_data_dict(articles, schedules, doc_index) # this dictionary stores the metadata as well as chunk data
+    chunked_data_dict_list.insert(0, {"preamble": pdf_sections["preamble"]}) 
 
-    chunked_data = [pdf_sections["preamble"]] + articles + schedules
+    chunked_data = [pdf_sections["preamble"]] + articles + schedules # this list only contains the chunked data to be sent to the embnedding model
     logger.info("Chunking PDF content completed.")
+
     return chunked_data_dict_list, chunked_data
