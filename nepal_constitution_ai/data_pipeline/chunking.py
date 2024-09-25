@@ -3,7 +3,7 @@ from nepal_constitution_ai.data_pipeline.loader import load_pdf
 from nepal_constitution_ai.utils.utils import parse_to_int, find_key_in_range, is_serial_number
 import re
 
-
+# List of range of articles corresponding to the toc Parts in the constitution
 toc_articles_index = ["1-9", "10-15", "16-48", "49-55", "56-60", "61-73", "74-82", "83-108", "109-114", "115-125", "126-156", "157-161", "162-174", "175-196", "197-202", "203-213", "214-220", "221-227", "228-230", "231-237", "238-239", "240-241", "242-244", "245-247", "248-249", "250-251", "252-265", "266-268", "269-272", "273-273", "274-274", "275-294", "295-305", "306-306", "307-308"]
 
 
@@ -15,10 +15,10 @@ def format_content(pages: str ) -> str:
 
 def format_pdf_section(file_path: str) -> dict:
     content = load_pdf(file_path)
-    toc = content[1:5]
-    preamble = content[5:7]
-    articles = content[7:220]
-    schedules = content[220:]
+    toc = content[1:5] # Page content from page 2 to page 5
+    preamble = content[5:7] # Page content from page 6 to page 7
+    articles = content[7:220] # Page content from page 8 to page 220
+    schedules = content[220:] # Page content from page 221 to the end
     
     return {
         "toc": format_content(toc),
