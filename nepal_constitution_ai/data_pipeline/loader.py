@@ -1,7 +1,6 @@
 import os
 from loguru import logger
 from langchain_community.document_loaders import PyPDFLoader
-from nepal_constitution_ai.config.config import settings
 
 def load_pdf(file_path: str) -> list[dict] | None:
     file_path = file_path

@@ -34,3 +34,24 @@ def find_key_in_range(number, doc_index):
         except ValueError:
             continue  # Skip if value cannot be parsed into a range
     return None
+
+
+class LLM:
+    GPT_3_5 = "gpt-3.5"
+    GPT_4o = "gpt-4o"
+    GPT_4o_MINI = "gpt-4o-mini"
+
+class VectorDB:
+    PINECONE = "pinecone"
+
+
+class MessageBy:
+    USER = "user"
+    LLM = "llm"
+
+
+LLM_MAP = {
+    LLM.GPT_3_5: "gpt-3.5-turbo",
+    LLM.GPT_4o: "gpt-4o",
+    LLM.GPT_4o_MINI: "gpt-4o-mini",
+}

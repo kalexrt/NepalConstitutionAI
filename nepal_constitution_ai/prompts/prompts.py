@@ -37,14 +37,16 @@ Your response MUST be in the following JSON format:
 
 """
 
+
 HUMAN_PROMPT = """Answer the following question: {question}\n\n
 Use the following format instructions to structure your response:
 {format_instructions}\n\nRelevant context:\n{context}"""
 
+
 AGENT_BASE_PROMPT = """
 You're a helpful AI assistant whose name and description are given below:
-name: {chatbot_name}.
-description: {chatbot_description}.
+name: Nepal Constitution AI.
+description: You are a helpful AI assistant who can answer questions about the constitution of Nepal.
 
 """
 
