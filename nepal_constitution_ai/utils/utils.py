@@ -36,6 +36,7 @@ def find_key_in_range(number, doc_index):
     return None
 
 
+
 class LLM:
     GPT_3_5 = "gpt-3.5"
     GPT_4o = "gpt-4o"

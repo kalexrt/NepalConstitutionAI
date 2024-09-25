@@ -1,4 +1,4 @@
-contextualize_q_system_prompt = """
+CONTEXTUALIZE_Q_SYSTEM_PROMPT = """
 You're an AI assistant who will be given with a chat history and a user question. Based on the chat history and the user question \
 you reformulate the question and return the new question.
 
