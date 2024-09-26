@@ -8,7 +8,7 @@ from langchain_core.prompts import (
     MessagesPlaceholder,
 )
 
-from nepal_constitution_ai.prompts.prompts import HUMAN_PROMPT, SYSTEM_PROMPT, contextualize_q_system_prompt
+from nepal_constitution_ai.prompts.prompts import HUMAN_PROMPT, SYSTEM_PROMPT, CONTEXTUALIZE_Q_SYSTEM_PROMPT
 
 
 @chain
@@ -144,7 +144,7 @@ def rewrite_query(query, llm_model, history):
     # Create a prompt to reformulate the query using the chat history
     contextualize_q_prompt = ChatPromptTemplate.from_messages(
         [
-            ("system", contextualize_q_system_prompt),
+            ("system", CONTEXTUALIZE_Q_SYSTEM_PROMPT),
             MessagesPlaceholder("chat_history"),
             (
                 "human",
