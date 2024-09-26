@@ -1,3 +1,24 @@
+from pydantic import BaseModel
+from typing import List
+
+from langchain.schema import BaseChatMessageHistory, BaseMessage
+class ChatResponse(BaseModel):
+    message: str = ""
+
+class ChatHistory(BaseChatMessageHistory):
+    def __init__(self):
+        super().__init__()
+        self.messages: List[BaseMessage] = []
+
+    def add_message(self, message: BaseMessage) -> None:
+        self.messages.append(message)
+
+    def clear(self) -> None:
+        self.messages = []
+
+    def get_messages(self) -> List[BaseMessage]:
+        return self.messages
+
 def parse_to_int(num: str) -> int:
      try:
         return int(num)
@@ -34,3 +55,4 @@ def find_key_in_range(number, doc_index):
         except ValueError:
             continue  # Skip if value cannot be parsed into a range
     return None
+

@@ -1,5 +1,3 @@
-from loguru import logger
-
 from langchain_pinecone import PineconeVectorStore
 
 from nepal_constitution_ai.models.openai.openai_model import OpenaiModel
@@ -16,15 +14,14 @@ def get_llm(llm_name: str) -> OpenaiModel:
     Returns:
         OpenaiModel: The selected OpenAI model.
 
+    Raises:
+        ValueError: If the provided LLM name is invalid.
     """
-    try:
+    if llm_name.lower() in settings.OPENAI_MODEL:
         llm_model = OpenaiModel(llm_name).model_selection()
+    else:
+        return ValueError("Wrong llm model selected")
 
-    except Exception as e:
-        logger.error(f"Invalid LLM model selected: {llm_name}")
-        raise ValueError("Wrong llm model selected")
-    
-    logger.info(f"Successfully retrieved model: {llm_name}")
     return llm_model
 
 
@@ -41,19 +38,19 @@ def get_vector_retriever(vector_db: str, embedding, k: int = 4):
 
     Returns:
         PineconeVectorStore: A configured Pinecone retriever object.
+
+    Raises:
+        ValueError: If an unsupported vector database is provided.
     """
-    try:
+    if vector_db.lower() == settings.VECTOR_DB:
         pinecone_index = settings.PINECONE_INDEX
 
-        retriever = PineconeVectorStore(
-                index_name=pinecone_index,
-                embedding=embedding,
-                pinecone_api_key=settings.PINECONE_API_KEY,
-            ).as_retriever(search_kwargs={"k": k})
+        return PineconeVectorStore(
+            index_name=pinecone_index,
+            embedding=embedding,
+            pinecone_api_key= settings.PINECONE_API_KEY,
+            
+        ).as_retriever(search_kwargs={"k": k})
 
-        logger.info(f"Successfully created retriever for vector database: {vector_db}")
-        return retriever
-
-    except Exception as e:
-        logger.error(f"Unsupported vector database provided: {vector_db}")
+    else:
         raise ValueError(f"Unsupported vector database: {vector_db}")

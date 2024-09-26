@@ -2,6 +2,8 @@ from langchain_openai import ChatOpenAI
 
 from nepal_constitution_ai.config.config import settings
 
+
+
 class OpenaiModel:
     def __init__(self, model_name=settings.OPENAI_MODEL) -> None:
         self.model_name = model_name

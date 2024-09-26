@@ -1,14 +1,15 @@
-from langchain_core.runnables import chain
-from langchain_core.messages import SystemMessage
-from langchain.schema.runnable import RunnableLambda
 from langchain.output_parsers import ResponseSchema, StructuredOutputParser
+from langchain.schema.runnable import RunnableLambda
+from langchain_core.messages import SystemMessage
 from langchain_core.prompts import (
     ChatPromptTemplate,
     HumanMessagePromptTemplate,
     MessagesPlaceholder,
 )
 
-from nepal_constitution_ai.prompts.prompts import HUMAN_PROMPT, SYSTEM_PROMPT, CONTEXTUALIZE_Q_SYSTEM_PROMPT
+from langchain_core.runnables import chain
+
+from nepal_constitution_ai.prompts.prompts import HUMAN_PROMPT, SYSTEM_PROMPT, CONTEXTUALIZE_Q_SYSTEM_PROMPT, CONVERSATION_PROMPT
 
 
 @chain
@@ -31,6 +32,18 @@ def format_docs_with_id(docs):
         )
     return "Unexpected document type"
 
+def setup_conversation_chain(llm_model):
+    conversation_chain_prompt = ChatPromptTemplate.from_messages(
+        [
+            (
+                "system",
+                CONVERSATION_PROMPT,
+            ),
+            ("human", "{input}"),
+        ]
+    )
+
+    return conversation_chain_prompt | llm_model
 
 class RetrieverChain:
     """
@@ -50,7 +63,7 @@ class RetrieverChain:
             [
                 ResponseSchema(
                     name="answer",
-                    description="The answer to the user question, with the source",
+                    description="The answer to the user question based on the provided context.",
                 ),
             ]
         )
