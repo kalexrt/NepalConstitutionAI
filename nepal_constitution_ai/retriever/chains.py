@@ -9,7 +9,7 @@ from langchain_core.prompts import (
 
 from langchain_core.runnables import chain
 
-from nepal_constitution_ai.prompts.prompts import HUMAN_PROMPT, SYSTEM_PROMPT, contextualize_q_system_prompt
+from nepal_constitution_ai.prompts.prompts import HUMAN_PROMPT, SYSTEM_PROMPT, CONTEXTUALIZE_Q_SYSTEM_PROMPT, CONVERSATION_PROMPT
 
 
 @chain
@@ -32,6 +32,18 @@ def format_docs_with_id(docs):
         )
     return "Unexpected document type"
 
+def setup_conversation_chain(llm_model):
+    conversation_chain_prompt = ChatPromptTemplate.from_messages(
+        [
+            (
+                "system",
+                CONVERSATION_PROMPT,
+            ),
+            ("human", "{input}"),
+        ]
+    )
+
+    return conversation_chain_prompt | llm_model
 
 class RetrieverChain:
     """
@@ -51,7 +63,7 @@ class RetrieverChain:
             [
                 ResponseSchema(
                     name="answer",
-                    description="The answer to the user question, with the source",
+                    description="The answer to the user question based on the provided context.",
                 ),
             ]
         )
@@ -145,7 +157,7 @@ def rewrite_query(query, llm_model, history):
     # Create a prompt to reformulate the query using the chat history
     contextualize_q_prompt = ChatPromptTemplate.from_messages(
         [
-            ("system", contextualize_q_system_prompt),
+            ("system", CONTEXTUALIZE_Q_SYSTEM_PROMPT),
             MessagesPlaceholder("chat_history"),
             (
                 "human",
