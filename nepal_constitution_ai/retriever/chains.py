@@ -1,13 +1,12 @@
-from langchain.output_parsers import ResponseSchema, StructuredOutputParser
-from langchain.schema.runnable import RunnableLambda
+from langchain_core.runnables import chain
 from langchain_core.messages import SystemMessage
+from langchain.schema.runnable import RunnableLambda
+from langchain.output_parsers import ResponseSchema, StructuredOutputParser
 from langchain_core.prompts import (
     ChatPromptTemplate,
     HumanMessagePromptTemplate,
     MessagesPlaceholder,
 )
-
-from langchain_core.runnables import chain
 
 from nepal_constitution_ai.prompts.prompts import HUMAN_PROMPT, SYSTEM_PROMPT, contextualize_q_system_prompt
 
