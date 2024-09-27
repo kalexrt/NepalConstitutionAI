@@ -161,7 +161,7 @@ def rewrite_query(query, llm_model, history):
             MessagesPlaceholder("chat_history"),
             (
                 "human",
-                "Reformulate the given question using the chat history: {user_question}",
+                "{user_question}",
             ),
         ]
     )

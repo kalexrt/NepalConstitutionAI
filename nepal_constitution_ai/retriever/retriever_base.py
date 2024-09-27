@@ -3,8 +3,7 @@ from langchain_openai import OpenAIEmbeddings
 from loguru import logger
 from fastapi import HTTPException
 
-from nepal_constitution_ai.utils.utils import ChatResponse
-from nepal_constitution_ai.utils.utils import ChatHistory
+from nepal_constitution_ai.chat.schemas import ChatResponse, ChatHistory
 from nepal_constitution_ai.config.config import settings
 from nepal_constitution_ai.retriever.chains import (
     RetrieverChain,
@@ -54,7 +53,6 @@ class Retriever:
                 )
             else:
                 new_query = query
-
             result = self.agent.invoke(
                 {"input": new_query}
             )
