@@ -9,14 +9,15 @@ class Settings(BaseSettings):
     LANGSMITH_API_KEY: str
     PINECONE_API_KEY: str
     OPENAI_API_KEY: str
-    EMBEDDING_MODEL: str
-    EMBEDDING_DIM: str
-    OPENAI_MODEL: str 
-    VECTOR_DB: str 
-    PINECONE_INDEX: str
-    PINECONE_CLOUD: str 
-    PINECONE_REGION: str
-    FILE_PATH: str
+    EMBEDDING_MODEL: str = "text-embedding-3-small"
+    EMBEDDING_DIM: str = "1536"
+    OPENAI_MODEL: str = "gpt-3.5-turbo"
+    VECTOR_DB: str = "pinecone"
+    PINECONE_INDEX: str = "test"
+    PINECONE_CLOUD: str = "aws"
+    PINECONE_REGION: str = "us-east-1"
+    TOP_K:int = 3
+    FILE_PATH: str=" data/nepal_constitution_2072.pdf"
     model_config = SettingsConfigDict(env_file=".env")
 
 

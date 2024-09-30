@@ -30,7 +30,7 @@
 
     - Add your API keys to a .env file.
 
-## Mthods to Run the Application
+## Methods to Run the Application
 ### Running the API
 ```bash
 fastapi run main.py

@@ -28,7 +28,7 @@ def get_llm(llm_name: str) -> OpenaiModel:
     return llm_model
 
 
-def get_vector_retriever(vector_db: str, embedding, k: int = 3):
+def get_vector_retriever(vector_db: str, embedding, k: int = settings.TOP_K):
     """
     Retrieves a vector store retriever based on the given vector database name.
     Specifically configured for Pinecone, the function returns a retriever that
@@ -37,7 +37,7 @@ def get_vector_retriever(vector_db: str, embedding, k: int = 3):
     Args:
         vector_db (str): The name of the vector database (e.g., 'pinecone').
         embedding (callable): The embedding function used to convert queries into vectors.
-        k (int, optional): The number of top similar results to return. Defaults to 4.
+        k (int, optional): The number of top similar results to return.
 
     Returns:
         PineconeVectorStore: A configured Pinecone retriever object.
