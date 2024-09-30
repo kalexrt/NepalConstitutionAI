@@ -28,7 +28,7 @@ def get_llm(llm_name: str) -> OpenaiModel:
     return llm_model
 
 
-def get_vector_retriever(vector_db: str, embedding, k: int = 4):
+def get_vector_retriever(vector_db: str, embedding, k: int = 3):
     """
     Retrieves a vector store retriever based on the given vector database name.
     Specifically configured for Pinecone, the function returns a retriever that
