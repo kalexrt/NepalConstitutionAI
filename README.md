@@ -32,7 +32,7 @@
 
 4. Run the Application
     ```bash
-    python main.py
+    fastapi run main.py
     ```
 # Usage
 

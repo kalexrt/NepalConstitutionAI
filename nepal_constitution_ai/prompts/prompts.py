@@ -54,9 +54,6 @@ Use the following format instructions to structure your response:
 
 
 AGENT_PROMPT = """
-You're a helpful AI assistant whose name and description are given below:
-name: Nepal Constitution AI.
-description: You are a helpful AI assistant who can answer questions about the constitution of Nepal.
 Answer the following questions as best you can. You have access to the following tools:
 
 {tools}
