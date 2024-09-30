@@ -40,9 +40,9 @@ IMPORTANT: Make sure the answer is related to the provided context, otherwise sa
 
 Once you are sure about the answer is from the provided context, append the citation or from which article or schedule the answer is from, in the new line in the answer itself.
 
-Your response MUST be in the following JSON format:
+IMPORTANT: Your response MUST be in the VALID JSON format as follows:
 {{
-"answer": '<answer> Sourced from <which article or schedule>'
+"answer": "<answer> Sourced from <which article or schedule>"
 }}
 
 """
