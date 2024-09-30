@@ -56,16 +56,14 @@ class Retriever:
             result = self.agent.invoke(
                 {"input": new_query}
             )
-            output = result["output"]
-
+            output = result["output"]["answer"]
             if isinstance(output, AIMessage):
                 if isinstance(output.content, str):
                     return ChatResponse(message=output.content)
                 else:
                     return ChatResponse(message="")
             else:
-                answer_op = output["answer"]
-                answer = answer_op.get("answer", "")
+                answer = output["answer"]
 
 
                 result = ChatResponse(message=answer)

@@ -12,3 +12,5 @@ langchain-pinecone==0.2.0
 psycopg2-binary==2.9.9
 alembic==1.13.3
 fastapi[standard]
+streamlit==1.38.0
+streamlit-local-storage==0.0.24

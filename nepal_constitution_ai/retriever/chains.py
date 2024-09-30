@@ -1,4 +1,3 @@
-from langchain.output_parsers import ResponseSchema, StructuredOutputParser
 from langchain.schema.runnable import RunnableLambda
 from langchain_core.messages import SystemMessage
 from langchain_core.prompts import (
@@ -43,7 +42,12 @@ def setup_conversation_chain(llm_model):
         ]
     )
 
-    return conversation_chain_prompt | llm_model
+    return conversation_chain_prompt | llm_model | RunnableLambda(
+                lambda x: {
+                    "context": "",
+                    "answer": x,
+                    "orig_context":"",
+                })
 
 class RetrieverChain:
     """
@@ -58,18 +62,6 @@ class RetrieverChain:
         self.retriever = retriever
         self.llm_model = llm_model
 
-        # Defining the output parser to structure the LLM model response
-        self.output_parser = StructuredOutputParser.from_response_schemas(
-            [
-                ResponseSchema(
-                    name="answer",
-                    description="The answer to the user question based on the provided context.",
-                ),
-            ]
-        )
-
-        # Fetching format instructions for output
-        format_instructions = self.output_parser.get_format_instructions()
 
         # Setting the document formatting function
         self.format_docs = format_docs_with_id
@@ -81,7 +73,6 @@ class RetrieverChain:
                 HumanMessagePromptTemplate.from_template(HUMAN_PROMPT),
             ],
             input_variables=["question", "context"],
-            partial_variables={"format_instructions": format_instructions},
         )
 
     def retrieve_and_format(self, query):
@@ -111,7 +102,6 @@ class RetrieverChain:
         """
         formatted_prompt = self.prompt.format(**inputs)
         answer = self.llm_model.invoke(formatted_prompt)
-        answer = self.output_parser.invoke(answer)
 
         return {
             "context": inputs["context"],
@@ -169,7 +159,7 @@ def rewrite_query(query, llm_model, history):
     new_query_chain = contextualize_q_prompt | llm_model
     # Invoke the LLM with the user question and chat history
     res = new_query_chain.invoke(
-        {"user_question": query, "chat_history": history.get_messages()}
+        {"user_question": query, "chat_history": history.get_messages()[:-1]}
     )
 
     return res.content

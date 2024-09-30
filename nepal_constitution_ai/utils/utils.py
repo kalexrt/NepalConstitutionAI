@@ -1,3 +1,5 @@
+import uuid
+
 def parse_to_int(num: str) -> int:
      try:
         return int(num)
@@ -34,3 +36,13 @@ def find_key_in_range(number, doc_index):
         except ValueError:
             continue  # Skip if value cannot be parsed into a range
     return None
+
+
+def is_valid_uuid(uuid_string):
+    if uuid_string is None:
+        return False
+    try:
+        val = uuid.UUID(uuid_string, version=4)
+        return True
+    except ValueError:
+        return False
