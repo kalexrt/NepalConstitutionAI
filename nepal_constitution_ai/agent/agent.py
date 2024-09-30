@@ -10,7 +10,7 @@ def setup_agent(
         Tool(
             name="Vector Search",
             func=lambda query: retriever_chain.invoke(query),
-            description=f"Useful for answering any legal questions",
+            description=f"Useful for answering any legal questions related to nepal, its laws, its punishments etc",
             return_direct=True,
         ),
         Tool(
