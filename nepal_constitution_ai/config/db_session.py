@@ -1,4 +1,5 @@
 from typing import Generator
+from loguru import logger
 from sqlalchemy.orm.session import Session
 from contextlib import contextmanager
 from .db import create_db_session
@@ -10,6 +11,7 @@ def get_session() -> Generator:
         db = create_db_session()
         yield db
     except Exception as e:
+        logger.error(f"An error occurred while creating db session: {str(e)}")
         raise e
     finally:
         if db:

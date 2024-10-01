@@ -1,12 +1,13 @@
 import uuid
+from typing import Union
 
-def parse_to_int(num: str) -> int:
+def parse_to_int(num: str) -> Union[int, None]:
      try:
         return int(num)
      except:
          return None
      
-def is_serial_number(word, current_sn):
+def is_serial_number(word: str, current_sn: int) -> bool:
     """
     Check if the word ends with a period and is a valid serial number
     that follows the current serial number sequence.
@@ -17,7 +18,7 @@ def is_serial_number(word, current_sn):
             return True
     return False
 
-def find_key_in_range(number, doc_index):
+def find_key_in_range(number: int, doc_index: dict) -> Union[str, None]:
     """
     Find the corresponding key in the doc_index for a given number.
     
@@ -38,11 +39,11 @@ def find_key_in_range(number, doc_index):
     return None
 
 
-def is_valid_uuid(uuid_string):
+def is_valid_uuid(uuid_string: str) -> bool:
     if uuid_string is None:
         return False
     try:
-        val = uuid.UUID(uuid_string, version=4)
+        uuid.UUID(uuid_string, version=4)
         return True
     except ValueError:
         return False

@@ -89,8 +89,14 @@ async def generate_response_with_session(
             chat_session_id=chat_session_id,
         )  # Call user_input with the database session
         return response
+    except HTTPException as e:
+        logger.error(f"HTTP error occurred: {str(e)}")
+        raise HTTPException(
+            detail=f"An error occurred while processing your query: {str(e)}",
+        )
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        logger.error(f"An unexpected error occurred: {str(e)}")
+        raise e
 
 
 

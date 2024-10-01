@@ -20,15 +20,18 @@ def get_llm(llm_name: str) -> OpenaiModel:
     """
     try:
         llm_model = OpenaiModel(llm_name).model_selection()
-    except Exception as e:
+    except ValueError:
         logger.error(f"Invalid LLM model selected: {llm_name}")
         raise ValueError("Wrong llm model selected")
+    except Exception as e:
+        logger.error(f"An error occurred while retrieving the llm model: {e}")
+        raise e
 
     logger.info(f"Successfully retrieved model: {llm_name}")
     return llm_model
 
 
-def get_vector_retriever(vector_db: str, embedding, k: int = 3):
+def get_vector_retriever(vector_db: str, embedding, k: int = 4):
     """
     Retrieves a vector store retriever based on the given vector database name.
     Specifically configured for Pinecone, the function returns a retriever that
@@ -57,6 +60,9 @@ def get_vector_retriever(vector_db: str, embedding, k: int = 3):
         logger.info(f"Successfully created retriever for vector database: {vector_db}")
         return retriever
 
-    except Exception as e:
+    except ValueError:
         logger.error(f"Unsupported vector database provided: {vector_db}")
         raise ValueError(f"Unsupported vector database: {vector_db}")
+    except Exception as e:
+        logger.error(f"An error occurred while retrieving the vector retriever: {e}")
+        raise e

@@ -1,10 +1,15 @@
 from nepal_constitution_ai.agent.utils import create_agent
+from nepal_constitution_ai.retriever.chains import RetrieverChain
+from nepal_constitution_ai.models.openai.openai_model import OpenaiModel
+from langchain.chains import LLMChain
+from typing import Union
+
 from langchain.tools import Tool
 
 def setup_agent(
-    retriever_chain,
-    conv_chain,
-    llm_model,
+    retriever_chain: RetrieverChain,
+    conv_chain: LLMChain,
+    llm_model: Union[OpenaiModel],
 ):
     tools = [
         Tool(

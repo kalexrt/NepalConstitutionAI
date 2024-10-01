@@ -16,4 +16,4 @@ def embed_chunks(chunked_data: list[str]) -> list[list[float]]:
     
     except Exception as e:  # Catch any exception during the embedding process and return none
         logger.error(f"An error occurred while embedding chunks: {e}")  
-        return None  
+        raise e
