@@ -43,7 +43,7 @@ Format:
 <answer> Sourced from <which article or schedule>
 """
 
-HUMAN_PROMPT = """Answer the following question: {question}\n\n"""
+HUMAN_PROMPT = """Use the following context: {context} \n\n Answer the following question: {question}\n\n"""
 
 
 AGENT_PROMPT = """
