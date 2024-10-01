@@ -54,6 +54,12 @@ with get_session() as db:
         "This is a conversational chatbot where you can ask "
         "questions regarding the Constitution of Nepal 2072."
     )
+    if st.button("Reset Conversation"):
+        localS = LocalStorage()
+        localS.deleteAll()
+        chat_history = []
+    
+
     # Initialize chat history.
     st.session_state.messages = chat_history
 
@@ -83,3 +89,4 @@ with get_session() as db:
             response = st.write(output.message)
         new_message = ChatMessageModel(content=output.message, chat_session_id=chat_session_id, message_by="llm", message_time=datetime.now())
         st.session_state.messages.append(new_message)
+    

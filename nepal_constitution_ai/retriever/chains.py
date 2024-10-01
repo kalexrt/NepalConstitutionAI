@@ -5,7 +5,7 @@ from langchain_core.prompts import (
     HumanMessagePromptTemplate,
     MessagesPlaceholder,
 )
-
+import json
 from langchain_core.runnables import chain
 
 from nepal_constitution_ai.prompts.prompts import HUMAN_PROMPT, SYSTEM_PROMPT, CONTEXTUALIZE_Q_SYSTEM_PROMPT, CONVERSATION_PROMPT
@@ -44,9 +44,7 @@ def setup_conversation_chain(llm_model):
 
     return conversation_chain_prompt | llm_model | RunnableLambda(
                 lambda x: {
-                    "context": "",
                     "answer": x,
-                    "orig_context":"",
                 })
 
 class RetrieverChain:
@@ -85,7 +83,8 @@ class RetrieverChain:
         Returns:
             dict: A dictionary containing formatted documents and the original documents.
         """
-        docs = self.retriever.invoke(query)
+        query = json.loads(query)
+        docs = self.retriever.invoke(query["reformulated_question"])
         formatted_docs = self.format_docs.invoke(docs)
 
         return {"context": formatted_docs, "question": query, "orig_context": docs}

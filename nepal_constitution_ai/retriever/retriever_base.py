@@ -60,17 +60,13 @@ class Retriever:
             if isinstance(output, AIMessage):
                 if isinstance(output.content, str):
                     return ChatResponse(message=output.content)
-                else:
-                    return ChatResponse(message="")
-            else:
-                answer = output["answer"]
+            return ChatResponse(message="")
 
-
-                result = ChatResponse(message=answer)
-                return result
-
-        except Exception as e:
+        except HTTPException as e:
+            logger.error(f"HTTP error occurred: {str(e)}")
             raise HTTPException(
-                status_code=500,
                 detail=f"An error occurred while processing your query: {str(e)}",
             )
+        except Exception as e:
+            logger.error(f"An unexpected error occurred: {str(e)}")
+            raise e
