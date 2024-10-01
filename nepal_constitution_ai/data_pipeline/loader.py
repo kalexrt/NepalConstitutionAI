@@ -1,8 +1,9 @@
 import os
+from typing import Union
 from loguru import logger
 from langchain_community.document_loaders import PyPDFLoader
 
-def load_pdf(file_path: str) -> list[dict] | None:
+def load_pdf(file_path: str) -> Union[list[dict], None]:
     """Loads a PDF file and returns its content as a list of dictionaries, or None if unsuccessful."""
     
     file_extension = os.path.splitext(file_path)[1].lower()
@@ -22,6 +23,8 @@ def load_pdf(file_path: str) -> list[dict] | None:
 
     except FileNotFoundError as e:
         logger.error(f"File not found: {e}")
+        raise e
 
     except Exception as e: # Catch any other unexpected errors that might occur and log them
         logger.error(f"An error occurred while loading the PDF: {e}")
+        raise e

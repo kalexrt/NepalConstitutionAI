@@ -1,5 +1,4 @@
 from loguru import logger
-
 from langchain_pinecone import PineconeVectorStore
 
 from nepal_constitution_ai.models.openai.openai_model import OpenaiModel
@@ -16,19 +15,23 @@ def get_llm(llm_name: str) -> OpenaiModel:
     Returns:
         OpenaiModel: The selected OpenAI model.
 
+    Raises:
+        ValueError: If the provided LLM name is invalid.
     """
     try:
         llm_model = OpenaiModel(llm_name).model_selection()
-
-    except Exception as e:
+    except ValueError:
         logger.error(f"Invalid LLM model selected: {llm_name}")
         raise ValueError("Wrong llm model selected")
-    
+    except Exception as e:
+        logger.error(f"An error occurred while retrieving the llm model: {e}")
+        raise e
+
     logger.info(f"Successfully retrieved model: {llm_name}")
     return llm_model
 
 
-def get_vector_retriever(vector_db: str, embedding, k: int = 4):
+def get_vector_retriever(vector_db: str, embedding, k: int = settings.TOP_K):
     """
     Retrieves a vector store retriever based on the given vector database name.
     Specifically configured for Pinecone, the function returns a retriever that
@@ -37,10 +40,13 @@ def get_vector_retriever(vector_db: str, embedding, k: int = 4):
     Args:
         vector_db (str): The name of the vector database (e.g., 'pinecone').
         embedding (callable): The embedding function used to convert queries into vectors.
-        k (int, optional): The number of top similar results to return. Defaults to 4.
+        k (int, optional): The number of top similar results to return.
 
     Returns:
         PineconeVectorStore: A configured Pinecone retriever object.
+
+    Raises:
+        ValueError: If an unsupported vector database is provided.
     """
     try:
         pinecone_index = settings.PINECONE_INDEX
@@ -54,6 +60,9 @@ def get_vector_retriever(vector_db: str, embedding, k: int = 4):
         logger.info(f"Successfully created retriever for vector database: {vector_db}")
         return retriever
 
-    except Exception as e:
+    except ValueError:
         logger.error(f"Unsupported vector database provided: {vector_db}")
         raise ValueError(f"Unsupported vector database: {vector_db}")
+    except Exception as e:
+        logger.error(f"An error occurred while retrieving the vector retriever: {e}")
+        raise e
