@@ -60,8 +60,8 @@ class Retriever:
                     {"input": new_query}
                 )
                 return result
-            else:
-                result = self.agent.invoke(
+            
+            result = self.agent.invoke(
                     {"input": new_query}
                 )
             output = result["output"]["answer"]
