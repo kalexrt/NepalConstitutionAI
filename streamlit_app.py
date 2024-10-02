@@ -82,7 +82,8 @@ with get_session() as db:
         with st.chat_message("user"):
             st.markdown(prompt)
         # Generate a response using the OpenAI API.
-        output = user_input(db=db, user="", query=prompt, chat_session_id=chat_session_id)
+        with st.spinner('Thinking...'):
+            output = user_input(db=db, user="", query=prompt, chat_session_id=chat_session_id)
         # Stream the response to the chat using `st.write_stream`, then store it in 
         # session state.
         with st.chat_message("assistant"):
