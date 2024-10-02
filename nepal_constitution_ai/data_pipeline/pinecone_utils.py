@@ -20,7 +20,7 @@ def create_index(pc: Pinecone) -> None:
     if settings.PINECONE_INDEX not in pc.list_indexes().names():
         pc.create_index(
             name=settings.PINECONE_INDEX , 
-            dimension=settings.EMBEDDING_DIM, 
+            dimension=int(settings.EMBEDDING_DIM), 
             spec=ServerlessSpec(
                 cloud=settings.PINECONE_CLOUD,
                 region=settings.PINECONE_REGION,

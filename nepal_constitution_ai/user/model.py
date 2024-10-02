@@ -5,7 +5,7 @@ from sqlalchemy import Column, DateTime
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import Mapped, mapped_column
 
-from app.config.db import Base
+from nepal_constitution_ai.config.db import Base
 
 class User(Base):
     __tablename__ = "users"

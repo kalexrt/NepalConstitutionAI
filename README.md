@@ -30,15 +30,20 @@
 
     - Add your API keys to a .env file.
 
-4. Run the Application
-    ```bash
-    python main.py
-    ```
-# Usage
+## Methods to Run the Application
+### Running the API
+```bash
+fastapi run main.py
+```
+### Running the Application
+```bash
+streamlit run streamlit_app.py
+```
+## Usage
 
 Once the application is running, users can interact with Nepal Constitution AI through a chat interface. Simply type in your questions about the constitution, and the bot will provide relevant articles along with explanations.
 
-# Example Queries
+## Example Queries
     "What are the fundamental rights mentioned in the Constitution of Nepal?"
     "How is the president of Nepal elected?"
     "What does the Constitution say about federalism?"
