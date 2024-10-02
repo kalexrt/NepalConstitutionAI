@@ -83,8 +83,12 @@ class RetrieverChain:
         Returns:
             dict: A dictionary containing formatted documents and the original documents.
         """
-        query = json.loads(query)
-        docs = self.retriever.invoke(query["reformulated_question"])
+        if isinstance(query, dict):
+            docs = self.retriever.invoke(query["input"])
+        else:
+            query = json.loads(query)
+            docs = self.retriever.invoke(query["reformulated_question"])
+        
         formatted_docs = self.format_docs.invoke(docs)
 
         return {"context": formatted_docs, "question": query, "orig_context": docs}
