@@ -1,7 +1,6 @@
 import streamlit as st
 from uuid import uuid4
 import asyncio
-import time
 from datetime import datetime
 from nepal_constitution_ai.config.db_session import get_session
 from nepal_constitution_ai.utils.utils import is_valid_uuid
@@ -24,9 +23,7 @@ async def create_new_chat_session(db, localS):
     return chat_session_id
 
 def load_chat_session(db):
-    time.sleep(2)
     localS = LocalStorage()
-    time.sleep(2)
     chat_session = localS.getItem("chat_session")
     if chat_session is None:
         return asyncio.run(create_new_chat_session(db=db, localS=localS))
