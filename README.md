@@ -33,7 +33,7 @@
 ## Methods to Run the Application
 ### 1. Running the API only
 ```bash
-fastapi run main.py
+fastapi run app.py
 ```
 ### 2. Running the Application
 ```bash
@@ -47,7 +47,7 @@ The Chatbot is evaluated based on three primary criteria:
 
 To initiate the evaluation, run the following command:
 ```bash
-python -m nepal_constitution_ai.evaluation
+python eval.py
 ```
 ## Usage
 
