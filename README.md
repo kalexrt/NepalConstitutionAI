@@ -31,13 +31,23 @@
     - Add your API keys to a .env file.
 
 ## Methods to Run the Application
-### Running the API
+### 1. Running the API only
 ```bash
-fastapi run main.py
+fastapi run app.py
 ```
-### Running the Application
+### 2. Running the Application
 ```bash
 streamlit run streamlit_app.py
+```
+## Evaluate
+The Chatbot is evaluated based on three primary criteria:
+1. **Context Precision**: Measures how accurately the chatbot understands and  maintains the context of the conversation.
+2. **Faithfulness**: Evaluates whether the chatbot's responses are truthful and consistent with the source information or data.
+3. **Answer Relevancy**: Determines the degree to which the responses are relevant and meaningful to the user's queries.
+
+To initiate the evaluation, run the following command:
+```bash
+python eval.py
 ```
 ## Usage
 
