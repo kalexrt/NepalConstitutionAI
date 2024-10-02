@@ -22,6 +22,7 @@ class Retriever:
         llm: str,
         chat_history: ChatHistory,
         vector_db: str,
+        mode: str = "retriever"
     ) -> None:
         self.embedding = OpenAIEmbeddings(model=settings.EMBEDDING_MODEL, openai_api_key=settings.OPENAI_API_KEY)
         self.chat_history = chat_history
@@ -29,7 +30,7 @@ class Retriever:
         self.base_retriever = get_vector_retriever(
             vector_db=vector_db, embedding=self.embedding
         )
-
+        self.mode = mode
         self.retriever_chain = RetrieverChain(
             retriever=self.base_retriever,
             llm_model=self.llm_model,
@@ -53,9 +54,16 @@ class Retriever:
                 )
             else:
                 new_query = query
-            result = self.agent.invoke(
-                {"input": new_query}
-            )
+            
+            if self.mode == "evaluation":
+                result = self.retriever_chain.invoke(
+                    {"input": new_query}
+                )
+                return result
+            else:
+                result = self.agent.invoke(
+                    {"input": new_query}
+                )
             output = result["output"]["answer"]
             if isinstance(output, AIMessage):
                 if isinstance(output.content, str):
