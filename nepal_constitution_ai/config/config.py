@@ -9,11 +9,11 @@ class Settings(BaseSettings):
     LANGSMITH_API_KEY: str
     PINECONE_API_KEY: str
     OPENAI_API_KEY: str
-    EMBEDDING_MODEL: str = "text-embedding-3-small"
-    EMBEDDING_DIM: str = "1536"
+    EMBEDDING_MODEL: str = "text-embedding-3-large"
+    EMBEDDING_DIM: str = "3072"
     OPENAI_MODEL: str = "gpt-3.5-turbo"
     VECTOR_DB: str = "pinecone"
-    PINECONE_INDEX: str = "test"
+    PINECONE_INDEX: str = "RAG-NEPAL-CONSTITUTION-PROD"
     PINECONE_CLOUD: str = "aws"
     PINECONE_REGION: str = "us-east-1"
     TOP_K:int = 3

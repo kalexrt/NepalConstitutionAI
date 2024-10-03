@@ -70,10 +70,10 @@ class RetrieverChain:
                 SystemMessage(content=SYSTEM_PROMPT),
                 HumanMessagePromptTemplate.from_template(HUMAN_PROMPT),
             ],
-            input_variables=["question", "context"],
+            input_variables=["question", "chat_history", "context"],
         )
 
-    def retrieve_and_format(self, query):
+    def retrieve_and_format(self, inputs):
         """
         Retrieves documents based on the query and formats them.
 
@@ -83,15 +83,15 @@ class RetrieverChain:
         Returns:
             dict: A dictionary containing formatted documents and the original documents.
         """
-        if isinstance(query, dict):
-            docs = self.retriever.invoke(query["input"])
+        if isinstance(inputs, dict):
+            docs = self.retriever.invoke(inputs["input"])
         else:
-            query = json.loads(query)
-            docs = self.retriever.invoke(query["reformulated_question"])
+            inputs = json.loads(inputs)
+            docs = self.retriever.invoke(inputs["reformulated_question"])
         
         formatted_docs = self.format_docs.invoke(docs)
 
-        return {"context": formatted_docs, "question": query, "orig_context": docs}
+        return {"context": formatted_docs, "question": inputs, "chat_history": inputs["chat_history"], "orig_context": docs}
 
     def generate_answer(self, inputs):
         """
@@ -103,6 +103,13 @@ class RetrieverChain:
         Returns:
             dict: Contains the context, generated answer, and original documents.
         """
+
+        query = inputs["question"]
+
+        if not isinstance(query, dict):
+            query = json.loads(query)
+
+        inputs["question"] = query["user_question"]
         formatted_prompt = self.prompt.format(**inputs)
         answer = self.llm_model.invoke(formatted_prompt)
 
