@@ -1,6 +1,7 @@
 import streamlit as st
 from uuid import uuid4
 import asyncio
+import random
 from datetime import datetime
 from nepal_constitution_ai.config.db_session import get_session
 from nepal_constitution_ai.utils.utils import is_valid_uuid
@@ -44,6 +45,7 @@ def load_chat_history(chat_session_id, db):
 
     return chat_history
 
+processing_messages = ["Thinking", "Cooking", "Going brrr", "Spinning the wheel", "Beep boop boop"]
 
 with get_session() as db:
     chat_session_id = load_chat_session(db=db)
@@ -82,7 +84,8 @@ with get_session() as db:
         with st.chat_message("user"):
             st.markdown(prompt)
         # Generate a response using the OpenAI API.
-        with st.spinner('Thinking...'):
+        random_processing_message = processing_messages[random.randint(0, len(processing_messages)-1)]
+        with st.spinner(f'{random_processing_message}...'):
             output = user_input(db=db, user="", query=prompt, chat_session_id=chat_session_id)
         # Stream the response to the chat using `st.write_stream`, then store it in 
         # session state.
