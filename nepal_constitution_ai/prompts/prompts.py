@@ -16,6 +16,7 @@ Return the response in the following valid JSON format:
     "user_question": "<user_question>",
     "reformulated_question": "<reformulated_question if applicable else user_question itself>",
 }}
+IMPORTANT: Do not answer the question.
 """
 
 CONVERSATION_PROMPT = """

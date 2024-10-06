@@ -1,5 +1,5 @@
 from langchain_core.messages.ai import AIMessage
-from langchain_openai import OpenAIEmbeddings
+from langchain_community.embeddings import JinaEmbeddings
 from loguru import logger
 from fastapi import HTTPException
 
@@ -24,7 +24,7 @@ class Retriever:
         vector_db: str,
         mode: str = "retriever"
     ) -> None:
-        self.embedding = OpenAIEmbeddings(model=settings.EMBEDDING_MODEL, openai_api_key=settings.OPENAI_API_KEY)
+        self.embedding = JinaEmbeddings(model=settings.JINA_EMBEDDING_MODEL, jina_api_key=settings.JINA_API_KEY)
         self.chat_history = chat_history
         self.llm_model = get_llm(llm)
         self.base_retriever = get_vector_retriever(

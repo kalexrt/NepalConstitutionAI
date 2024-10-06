@@ -1,10 +1,12 @@
 from loguru import logger
+from typing import Union
 from langchain_pinecone import PineconeVectorStore
 
 from nepal_constitution_ai.models.openai.openai_model import OpenaiModel
+from nepal_constitution_ai.models.groq.groq_model import GroqModel
 from nepal_constitution_ai.config.config import settings
 
-def get_llm(llm_name: str) -> OpenaiModel:
+def get_llm(llm_name: str) -> Union[OpenaiModel, GroqModel]:
     """
     Retrieves an OpenAI model based on the given model name. The function checks
     if the provided LLM name matches one of the predefined models (GPT-3.5, GPT-4).
@@ -19,10 +21,16 @@ def get_llm(llm_name: str) -> OpenaiModel:
         ValueError: If the provided LLM name is invalid.
     """
     try:
-        llm_model = OpenaiModel(llm_name).model_selection()
-    except ValueError:
-        logger.error(f"Invalid LLM model selected: {llm_name}")
-        raise ValueError("Wrong llm model selected")
+        if llm_name == settings.OPENAI_MODEL:
+            llm_model = OpenaiModel(llm_name).model_selection()
+            logger.info(f"Successfully retrieved model: {llm_name}")
+        elif llm_name == settings.GROQ_MODEL:
+            llm_model = GroqModel(llm_name).model_selection()
+            logger.info(f"Successfully retrieved model: {llm_name}")
+        else:
+            logger.error(f"Invalid LLM model selected: {llm_name}")
+            raise ValueError("Wrong llm model selected")
+
     except Exception as e:
         logger.error(f"An error occurred while retrieving the llm model: {e}")
         raise e

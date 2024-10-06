@@ -1,4 +1,4 @@
-from langchain_openai import OpenAIEmbeddings
+from langchain_community.embeddings import JinaEmbeddings
 from loguru import logger
 from nepal_constitution_ai.config.config import settings
 
@@ -8,7 +8,7 @@ def embed_chunks(chunked_data: list[str]) -> list[list[float]]:
     """
     try:
         logger.info("Embedding chunks...")
-        model = OpenAIEmbeddings(model=settings.EMBEDDING_MODEL, openai_api_key=settings.OPENAI_API_KEY)
+        model = JinaEmbeddings(model=settings.JINA_EMBEDDING_MODEL, jina_api_key=settings.JINA_API_KEY)
 
         embedded_chunks = model.embed_documents(chunked_data)
         logger.info("Chunks embedded successfully.")
