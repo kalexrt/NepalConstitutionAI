@@ -15,5 +15,5 @@ def create_agent(
         llm_model, tools, prompt
     )
 
-    return AgentExecutor(agent=agent, tools=tools, verbose=True)
+    return AgentExecutor(agent=agent, tools=tools, verbose=True, handle_parsing_errors=True)
 

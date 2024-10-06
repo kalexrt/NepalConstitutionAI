@@ -1,6 +1,7 @@
 from loguru import logger
 from typing import Union
 from langchain_pinecone import PineconeVectorStore
+from langchain_core.messages.ai import AIMessage
 
 from nepal_constitution_ai.models.openai.openai_model import OpenaiModel
 from nepal_constitution_ai.models.groq.groq_model import GroqModel
@@ -74,3 +75,16 @@ def get_vector_retriever(vector_db: str, embedding, k: int = settings.TOP_K):
     except Exception as e:
         logger.error(f"An error occurred while retrieving the vector retriever: {e}")
         raise e
+    
+def format_chat_history(chat_history: list) -> str:
+    """
+    Formats the chat history into a dictionary format.
+    """
+    chat_history_formatted = ""
+    for message in chat_history:
+        if isinstance(message, AIMessage):
+            chat_history_formatted += f"\nAI: {message.content}\n"
+        else:
+            chat_history_formatted += f"\nUser: {message.content}"
+
+    return chat_history_formatted

@@ -22,7 +22,7 @@ def setup_agent(
         Tool(
             name="Conversation",
             func=lambda query: conv_chain.invoke({"input": query}),
-            description="Useful for greetings ONLY",
+            description="Useful for greetings and general conversation",
             return_direct=True,
         ),
     ]

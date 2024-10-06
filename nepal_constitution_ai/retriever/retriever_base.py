@@ -2,6 +2,7 @@ from langchain_core.messages.ai import AIMessage
 from langchain_community.embeddings import JinaEmbeddings
 from loguru import logger
 from fastapi import HTTPException
+import json
 
 from nepal_constitution_ai.chat.schemas import ChatResponse, ChatHistory
 from nepal_constitution_ai.config.config import settings
@@ -14,6 +15,7 @@ from nepal_constitution_ai.agent.agent import setup_agent
 from nepal_constitution_ai.retriever.utils import (
     get_llm,
     get_vector_retriever,
+    format_chat_history
 )
 
 class Retriever:
@@ -53,8 +55,27 @@ class Retriever:
                     query=query, llm_model=self.llm_model, history=self.chat_history
                 )
             else:
-                new_query = query
+                new_query = f"""{{
+                    "user_question": {query},
+                    "reformulated_question": ""
+                }}
+                """
+
+            new_query = new_query.strip()
+            new_query = new_query.replace("\n", "")
+            if new_query[-2] == ",":
+                new_query = new_query[:-2] + "}"
+
+            new_query = json.loads(new_query)
             
+            chat_history_formatted = format_chat_history(
+                self.chat_history.get_messages()[:-1]
+            )
+            inputs = {
+                "user_question": new_query["user_question"],
+                "reformulated_question": new_query["reformulated_question"] ,
+                "chat_history": chat_history_formatted,
+            }
             if self.mode == "evaluation":
                 result = self.retriever_chain.invoke(
                     {"input": new_query}
@@ -62,7 +83,7 @@ class Retriever:
                 return result
             
             result = self.agent.invoke(
-                    {"input": new_query}
+                    {"input": inputs}
                 )
             output = result["output"]["answer"]
             if isinstance(output, AIMessage):
