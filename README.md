@@ -11,7 +11,6 @@
 
 - **Langchain**: Core framework to manage the retrieval and generation processes.
 - **Pinecone/FAISS**: Used as a vector database for efficient document retrieval.
-- **OpenAI/LLMs**: For generating coherent and context-aware responses.
 - **Custom Dataset**: Includes all articles of the Constitution of Nepal for comprehensive query results.
 
 ## Installation

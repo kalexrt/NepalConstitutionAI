@@ -1,0 +1,90 @@
+version: '3.8'
+
+services:
+  nepal-legal-chatbot:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: nepal-legal-chatbot-lambda
+    ports:
+      - "9000:8080"  # Lambda Runtime Interface Emulator port
+      - "8501:8501"  # Streamlit port (for direct access during development)
+    environment:
+      # Database configuration
+      - POSTGRES_USER=${POSTGRES_USER:-postgres}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-password}
+      - POSTGRES_DB=${POSTGRES_DB:-nepal_legal_db}
+      - POSTGRES_HOST=${POSTGRES_HOST:-host.docker.internal}
+      - POSTGRES_PORT=${POSTGRES_PORT:-5432}
+      
+      # API Keys
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+      - PINECONE_API_KEY=${PINECONE_API_KEY}
+      - COHERE_API_KEY=${COHERE_API_KEY}
+      - LANGSMITH_API_KEY=${LANGSMITH_API_KEY}
+      
+      # Model configurations
+      - GEMINI_MODEL=${GEMINI_MODEL:-gemini-1.5-flash}
+      - EMBEDDING_MODEL_PROVIDER=${EMBEDDING_MODEL_PROVIDER:-cohere}
+      - COHERE_EMBEDDING_MODEL=${COHERE_EMBEDDING_MODEL:-embed-multilingual-v3.0}
+      - EMBEDDING_DIM=${EMBEDDING_DIM:-1024}
+      
+      # Vector DB configuration
+      - VECTOR_DB=${VECTOR_DB:-pinecone}
+      - PINECONE_INDEX=${PINECONE_INDEX}
+      - PINECONE_CLOUD=${PINECONE_CLOUD:-aws}
+      - PINECONE_REGION=${PINECONE_REGION:-us-east-1}
+      
+      # Processing configurations
+      - CHUNK_SIZE=${CHUNK_SIZE:-1000}
+      - CHUNK_OVERLAP=${CHUNK_OVERLAP:-200}
+      - TOP_K=${TOP_K:-25}
+      - COHERE_RERANK_MODEL=${COHERE_RERANK_MODEL:-rerank-multilingual-v3.0}
+      - USE_RERANKING=${USE_RERANKING:-true}
+      - RELEVANCE_SCORE_THRESHOLD=${RELEVANCE_SCORE_THRESHOLD:-0.5}
+      - CREATE_NAMESPACE=${CREATE_NAMESPACE:-true}
+      - GENERATE_DOC_SUMMARY=${GENERATE_DOC_SUMMARY:-false}
+      - VECTORS_UPLOAD_BATCH_SIZE=${VECTORS_UPLOAD_BATCH_SIZE:-200}
+      
+      # Streamlit configuration
+      - STREAMLIT_SERVER_PORT=8501
+      - STREAMLIT_SERVER_ADDRESS=0.0.0.0
+      - STREAMLIT_SERVER_HEADLESS=true
+      - STREAMLIT_BROWSER_GATHER_USAGE_STATS=false
+    
+    volumes:
+      # Mount local env file if it exists
+      - ./.env:/var/task/.env:ro
+    
+    networks:
+      - nepal-legal-network
+    
+    # Health check
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8501/healthz"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # Optional: Local PostgreSQL for development
+  postgres:
+    image: postgres:15
+    container_name: nepal-legal-postgres
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER:-postgres}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-password}
+      - POSTGRES_DB=${POSTGRES_DB:-nepal_legal_db}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - nepal-legal-network
+
+networks:
+  nepal-legal-network:
+    driver: bridge
+
+volumes:
+  postgres_data:

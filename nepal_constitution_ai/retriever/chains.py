@@ -89,8 +89,8 @@ def setup_conversation_chain(llm_model):
     conversation_chain_prompt = ChatPromptTemplate(
         messages=[
             (SystemMessagePromptTemplate.from_template(CONVERSATION_PROMPT)),
+            (HumanMessagePromptTemplate.from_template("User question: {user_question}")),
         ],
-        input_variables=["user_question"],
     )
 
     return conversation_chain_prompt | llm_model | RunnableLambda(
@@ -160,16 +160,15 @@ class RetrieverChain:
                 default_retriever = default_retriever[0]
                 base_retriever = default_retriever.as_retriever(search_kwargs={"k": settings.TOP_K})
 
-                compressor = CohereRerank(model=settings.COHERE_RERANK_MODEL, cohere_api_key=settings.COHERE_API_KEY)
+                compressor = CohereRerank(model=settings.COHERE_RERANK_MODEL, cohere_api_key=settings.COHERE_API_KEY, top_n=settings.TOP_N)
 
                 compression_retriever = ContextualCompressionRetriever(
                     base_compressor=compressor, 
                     base_retriever=base_retriever  
                 )
-                compressed_docs = compression_retriever.invoke(inputs.get("reformulated_question", ""))
+                docs = compression_retriever.invoke(inputs.get("reformulated_question", ""))
 
-        formatted_docs = self.format_docs.invoke(compressed_docs)
-                
+        formatted_docs = self.format_docs.invoke(docs)
 
         return {"context": formatted_docs, "question": inputs.get("user_question", ""), "categories": inputs.get("categories", []), "orig_context": docs}
 

@@ -77,7 +77,7 @@ def user_input(db: Session, user: User, query: str, chat_session_id: UUID):
             chat_history.add_message(AIMessage(content=chat_message.message))
 
     retriever = Retriever(
-        llm=settings.OPENAI_MODEL,
+        llm=settings.GEMINI_MODEL,
         chat_history=chat_history,
     )
     response = retriever.invoke(query=query)

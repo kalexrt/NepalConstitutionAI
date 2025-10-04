@@ -21,7 +21,7 @@ def run_eval() -> dict:
     chat_history = ChatHistory()
 
     retriever = Retriever(
-            llm=settings.OPENAI_MODEL,
+            llm=settings.GEMINI_MODEL,
             chat_history=chat_history,
             mode="evaluation"
         )
@@ -41,7 +41,7 @@ def run_eval() -> dict:
     result = evaluate(
         eval_dataset,
         metrics=[context_precision, faithfulness, answer_relevancy],
-        llm=get_llm(settings.OPENAI_MODEL)
+        llm=get_llm(settings.GEMINI_MODEL)
     )
 
     return result

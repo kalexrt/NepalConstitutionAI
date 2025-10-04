@@ -8,13 +8,14 @@ class Settings(BaseSettings):
     POSTGRES_PORT: str
     LANGSMITH_API_KEY: str
     PINECONE_API_KEY: str
-    OPENAI_API_KEY: str
+    GEMINI_API_KEY_A: str
+    GEMINI_API_KEY_B: str
     COHERE_API_KEY: str
     EMBEDDING_MODEL_PROVIDER: str = "cohere"
     OPENAI_EMBEDDING_MODEL: str = "text-embedding-ada-002"
     COHERE_EMBEDDING_MODEL: str = "embed-multilingual-v3.0"
     EMBEDDING_DIM: str = "1024"
-    OPENAI_MODEL: str = "gpt-3.5-turbo"
+    GEMINI_MODEL: str = "gemini-2.5-pro"
     VECTOR_DB: str = "pinecone"
     PINECONE_INDEX: str = ""
     PINECONE_CLOUD: str = "aws"
@@ -22,7 +23,8 @@ class Settings(BaseSettings):
     CHUNK_SIZE:int = 1000
     VECTORS_UPLOAD_BATCH_SIZE: int = 200
     CHUNK_OVERLAP:int = 200
-    TOP_K:int = 25
+    TOP_K:int = 40
+    TOP_N:int = 5
     COHERE_RERANK_MODEL: str = "rerank-multilingual-v3.0"
     USE_RERANKING: bool = True
     RELEVANCE_SCORE_THRESHOLD:float = 0.5

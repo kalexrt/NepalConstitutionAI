@@ -47,3 +47,11 @@ def is_valid_uuid(uuid_string: str) -> bool:
         return True
     except ValueError:
         return False
+    
+def clean_json_response(response: str) -> str:
+    # Check if the response starts with ```json and ends with ```
+    if response.startswith("```json") and response.endswith("```"):
+        # Remove the starting ```json and the ending ```
+        cleaned_response = response[len("```json"): -len("```")].strip()
+        return cleaned_response
+    return response.strip()

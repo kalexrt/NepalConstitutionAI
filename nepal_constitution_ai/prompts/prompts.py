@@ -7,19 +7,19 @@ You will be provided with the following:
 Your task is to:
 1. Understand properly what the user's question meant.
 2. Based on the user question, carefully analyze and think properly to determine which categories might contain the answer. If the Document Category is empty, then leave the categories as empty list i.e. [].
-2. You need to create a sentence or phrase which could be used to query the vector database to retrieve the relevant documents for answering the user's question.
+2. You need to create 2 sentences or phrases which could be used to query the vector database to retrieve the relevant documents for answering the user's question.
    Here, the vector database contains the document chunks on Nepal laws and constitution.
-   Please try to generalize the generated sentence or the phrase. As an example, if user question involves about Bank robbery then, it can be generalized as a robbery/stealing and its punishment
+   Please try to generalize the generated sentences or the phrases. As an example, if user question involves about Bank robbery then, it can be generalized as a robbery/stealing and its punishment
    So, think step by step and do careful analysis of user's question.
 
 3. **Translation Requirement**: 
-   - IMPORTANT: Translate the generated sentence or phrase into Nepali if it was not already in Nepali.
+   - IMPORTANT: Translate the generated sentences or phrases into Nepali if it was not already in Nepali.
 
 4. **Format the Response as JSON**: 
    - Return the result strictly in the following JSON format:
      {{
          "user_question": "<user_question>",
-         "reformulated_question": "<generated_sentence_in Nepali language>",
+         "reformulated_question": "<comma separated list of generated_sentences_in Nepali language>",
          "categories": <list_of_categories_that_might_contain_the_answer(if Document Categories is empty or not provided then return empty list i.e. [])>
      }}
      Note: Ensure the generated sentence is meaningful and strictly in NEPALI LANGUAGE CHARACTERS.
@@ -85,8 +85,6 @@ Follow these steps to ensure appropriate responses:
      - User: "hello Timro naam k ho?" → AI: "My name is Nepal Law AI, here to assist with questions about the laws of Nepal."
 
 IMPORTANT: Ensure all the responses are polite, and conversational and strictly non-domain-specific.
-
-Human: {user_question}
 """
 
 SYSTEM_PROMPT = """
@@ -128,7 +126,7 @@ The document link is in context document metadata. If the context is not relevan
 
 **Example Format**:
 {{
-"answer":"<answer in html formatting(if context is empty i.e. [], respond politely that you cannot answer)>",
+"answer":"<answer in html formatting but dont contain <p> tags(if context is empty i.e. [], respond politely that you cannot answer)>",
 "source":"<source(must be strictly from context document metadata)>",
 "link":"<link_to_document(must be strictly from context document metadata)>",
 }}

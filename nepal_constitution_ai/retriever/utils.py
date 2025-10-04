@@ -2,25 +2,25 @@ from loguru import logger
 from langchain_pinecone import PineconeVectorStore
 from langchain_core.messages.ai import AIMessage
 
-from nepal_constitution_ai.models.openai.openai_model import OpenaiModel
+from nepal_constitution_ai.models.gemini.gemini_model import GeminiModel
 from nepal_constitution_ai.config.config import settings
 
-def get_llm(llm_name: str) -> OpenaiModel:
+def get_llm(llm_name: str, key_num: str = "A") -> GeminiModel:
     """
-    Retrieves an OpenAI model based on the given model name. The function checks
-    if the provided LLM name matches one of the predefined models (GPT-3.5, GPT-4).
+    Retrieves a Gemini model based on the given model name. The function checks
+    if the provided LLM name matches one of the predefined models.
 
     Args:
         llm_name (str): The name of the desired LLM model.
 
     Returns:
-        OpenaiModel: The selected OpenAI model.
+        GeminiModel: The selected Gemini model.
 
     Raises:
         ValueError: If the provided LLM name is invalid.
     """
     try:
-        llm_model = OpenaiModel(llm_name).model_selection()
+        llm_model = GeminiModel(llm_name).model_selection(key_num=key_num)
     except ValueError:
         logger.error(f"Invalid LLM model selected: {llm_name}")
         raise ValueError("Wrong llm model selected")

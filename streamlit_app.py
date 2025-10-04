@@ -115,7 +115,6 @@ with get_session() as db:
         st.session_state.messages.append(new_message)
         with st.chat_message("user"):
             st.markdown(prompt)
-        # Generate a response using the OpenAI API.
         random_processing_message = processing_messages[random.randint(0, len(processing_messages)-1)]
         with st.spinner(f'{random_processing_message}...'):
             output = user_input(db=db, user="", query=prompt, chat_session_id=chat_session_id)

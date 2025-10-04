@@ -1,0 +1,82 @@
+# Git files
+.git
+.gitignore
+.gitattributes
+
+# Documentation
+README.md
+*.md
+
+# Python cache
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+.Python
+env
+pip-log.txt
+pip-delete-this-directory.txt
+.tox
+.coverage
+.coverage.*
+.pytest_cache
+nosetests.xml
+coverage.xml
+*.cover
+*.log
+.cache
+.pytest_cache/
+
+# Virtual environments
+venv/
+ENV/
+env/
+.venv/
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Build files
+build/
+dist/
+*.egg-info/
+
+# Development files
+.env.local
+.env.development
+.env.test
+
+# Large data files that shouldn't be in container
+data/*.pdf
+data/*.json
+*.weights
+*.model
+*.pkl
+
+# Selenium driver (not needed in Lambda)
+nepal_constitution_ai/scrape/driver/
+
+# Development scripts
+eval.py
+
+# Docker files
+docker-compose.yml
+Dockerfile.*
+
+# Alembic versions (not needed for Lambda)
+alembic/versions/
+
+# Streamlit cache
+.streamlit/
+
+# Logs
+logs/
+*.log
